@@ -14,7 +14,7 @@ const useNotification = ({
 
     const notificate = useCallback(() => {
         new Notification(title, { body: description })
-    }, [])
+    }, [title, description])
     
     const requestNotificationPermission = useCallback(() => {
         if (Notification.permission === "granted") return
@@ -24,7 +24,7 @@ const useNotification = ({
                 setHasPermissionForNotification(true)
             }
         });
-    }, [])
+    }, [Notification.permission])
 
     useEffect(() => {
         if ("Notification" in window) {
