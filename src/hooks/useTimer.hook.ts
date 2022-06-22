@@ -15,18 +15,17 @@ const useTimer = ({ minutes, onFinishCountdown }: useTimerType) => {
     const startCountdown = useCallback(() => {
         setHasBeenStarted(true)
         setSeconds(minutesToSeconds(minutes))
-        setTimerId(
-            setInterval(() => {
-                setSeconds((seconds) => seconds - 1)
-            }, 1000)
-        )
-    }, [])
+        setTimerId(setInterval(() => {
+            setSeconds((seconds) => seconds - 1)
+        }, 1000))
+    }, [minutes])
 
     const stopCountdown = useCallback(() => {
+        setSeconds(minutesToSeconds(minutes))
         setHasBeenStarted(false)
         clearInterval(timerId)
         setTimerId(null)
-    }, [])
+    }, [minutes, timerId])
 
     useEffect(() => {
         if (hasBeenStarted && seconds === 0) {
