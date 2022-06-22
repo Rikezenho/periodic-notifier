@@ -3,7 +3,7 @@ import { useNotification } from '../../hooks/useNotification.hook'
 import { useTimer } from '../../hooks/useTimer.hook'
 import { useVibrate } from '../../hooks/useVibrate.hook'
 import { InputBoxed } from '../InputBoxed'
-import './styles.module.css'
+import './styles.css'
 
 const DEFAULT_INTERVAL = 1
 const DEFAULT_NOTIFICATION_TITLE = 'Notificação periódica!'
@@ -15,6 +15,8 @@ const TimerForm = () => {
 
     const [notificationTitle, setNotificationTitle] = useState(DEFAULT_NOTIFICATION_TITLE)
     const [notificationDescription, setNotificationDescription] = useState(DEFAULT_NOTIFICATION_DESCRIPTION)
+
+    const [shouldVibrate, setShouldVibrate] = useState(true)
 
     const {
         hasNotificationApi,
@@ -29,7 +31,7 @@ const TimerForm = () => {
     } = useVibrate()
 
     const onFinishCountdown = () => {
-        if (hasVibrateApi) {
+        if (hasVibrateApi && shouldVibrate) {
             vibrate()
         }
         if (hasNotificationApi && hasPermissionForNotification) {
@@ -63,9 +65,15 @@ const TimerForm = () => {
                 defaultValue={intervalInMinutes}
                 handleChange={(e) => setIntervalInMinutes(e.target.value)}
             />
-            {!hasPermissionForNotification ? <div>Autorize as notificações para esta página no seu navegador.</div> : null}
-            {hasNotificationApi ?
-                <>
+        </div>
+        {
+            !hasPermissionForNotification
+            ? <div className="warning">Autorize as notificações para esta página no seu navegador.</div>
+            : null
+        }
+        {hasPermissionForNotification && hasNotificationApi ?
+            <>
+                <div className="row">
                     <InputBoxed
                         label='Título da notificação'
                         type='text'
@@ -73,6 +81,8 @@ const TimerForm = () => {
                         defaultValue={notificationTitle}
                         handleChange={(e) => setNotificationTitle(e.target.value)}
                     />
+                </div>
+                <div className="row">
                     <InputBoxed
                         label='Descrição da notificação'
                         type='text'
@@ -80,10 +90,23 @@ const TimerForm = () => {
                         defaultValue={notificationDescription}
                         handleChange={(e) => setNotificationDescription(e.target.value)}
                     />
-                </> : null
-            }
-            {!hasNotificationApi ? <div>Seu browser não suporta o controle de vibrações.</div> : null}
-        </div>
+                </div>
+            </> : null
+        }
+        {!hasVibrateApi
+            ? <div className="warning">Seu browser não suporta o controle de vibrações.</div>
+            : <div className="row">
+                <label htmlFor="shouldVibrate">
+                    Vibrar?
+                    <input
+                        type="checkbox"
+                        id="shouldVibrate"
+                        checked={shouldVibrate}
+                        onChange={(e) => setShouldVibrate(e.target.checked)}
+                    />
+                </label>
+            </div>
+        }
         <div className="countdown">
             Segundos do timer: {seconds}
         </div>

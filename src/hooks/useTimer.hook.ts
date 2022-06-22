@@ -8,10 +8,12 @@ type useTimerType = {
 const minutesToSeconds = (minutes: number): number => minutes * 60
 
 const useTimer = ({ minutes, onFinishCountdown }: useTimerType) => {
-    const [seconds, setSeconds] = useState(minutesToSeconds(minutes))
+    const [seconds, setSeconds] = useState(minutesToSeconds(minutes) || 0)
+    const [hasBeenStarted, setHasBeenStarted] = useState(false)
     const [timerId, setTimerId] = useState(null)
 
     const startCountdown = useCallback(() => {
+        setHasBeenStarted(true)
         setSeconds(minutesToSeconds(minutes))
         setTimerId(
             setInterval(() => {
@@ -21,16 +23,21 @@ const useTimer = ({ minutes, onFinishCountdown }: useTimerType) => {
     }, [])
 
     const stopCountdown = useCallback(() => {
+        setHasBeenStarted(false)
         clearInterval(timerId)
         setTimerId(null)
     }, [])
 
     useEffect(() => {
-        if (seconds === 0) {
+        if (hasBeenStarted && seconds === 0) {
             onFinishCountdown()
             setSeconds(minutesToSeconds(minutes))
         }
     }, [seconds])
+
+    useEffect(() => {
+        setSeconds(minutesToSeconds(minutes))
+    }, [minutes])
 
     return {
         startCountdown,
