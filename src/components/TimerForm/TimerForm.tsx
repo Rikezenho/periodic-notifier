@@ -110,7 +110,7 @@ const TimerForm = () => {
         <div className="countdown">
             Segundos do timer: {seconds}
         </div>
-        <button className='button full active' onClick={toggleTimer}>
+        <button className={`button full ${isActive ? 'active' : ''}`} onClick={toggleTimer}>
             {isActive ? 'Parar' : 'Iniciar'}
         </button>
     </>
