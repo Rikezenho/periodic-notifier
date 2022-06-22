@@ -1,0 +1,32 @@
+---
+	import Layout from '../layouts/Layout.astro';
+	import { TimerForm } from '../components/TimerForm';
+---
+
+<Layout title="Welcome to Astro.">
+	<main>
+		<h1>Periodic Notifier</h1>
+		<TimerForm client:load />
+	</main>
+</Layout>
+
+<style>
+	:root {
+		--astro-gradient: linear-gradient(0deg, #4F39FA, #DA62C4);
+	}
+
+	h1 {
+		margin: 2rem 0;
+	}
+
+	main {
+		margin: auto;
+		padding: 1em;
+		max-width: 60ch;
+	}
+
+	.teste {
+		background-color: red;
+		padding: 10px;
+	}
+</style>

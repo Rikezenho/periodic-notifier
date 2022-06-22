@@ -1,0 +1,10 @@
+.input {
+  padding: 10px;
+  width: 100%;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  padding-bottom: 5px;
+}
