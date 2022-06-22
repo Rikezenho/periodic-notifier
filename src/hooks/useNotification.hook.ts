@@ -24,7 +24,7 @@ const useNotification = ({
                 setHasPermissionForNotification(true)
             }
         });
-    }, [Notification.permission])
+    }, [])
 
     useEffect(() => {
         if ("Notification" in window) {
