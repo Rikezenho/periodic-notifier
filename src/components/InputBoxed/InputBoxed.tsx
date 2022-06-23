@@ -5,7 +5,7 @@ type InputBoxedProps = {
     id?: string
     label?: string
     type?: 'text' | 'number' | 'tel',
-    defaultValue?: string,
+    value?: string,
     handleChange?: Function
 }
 
@@ -13,18 +13,12 @@ const InputBoxed = ({
     id = '',
     label = '',
     type = 'text',
-    defaultValue = '',
+    value = '',
     handleChange = () => {},
 }: InputBoxedProps) => {
-    const [internalValue, setInternalValue] = useState(defaultValue)
-
-    useEffect(() => {
-        setInternalValue(defaultValue)
-    }, [defaultValue])
-
     return (<>
         <label htmlFor={id} className={Styles.label}>{label}</label>
-        <input type={type} id={id} className={Styles.input} value={internalValue} onChange={handleChange} />
+        <input type={type} id={id} className={Styles.input} value={value} onChange={handleChange} />
     </>)
 }
 

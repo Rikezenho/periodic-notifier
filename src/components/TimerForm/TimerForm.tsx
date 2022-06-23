@@ -70,7 +70,7 @@ const TimerForm = () => {
                 label='Tempo de intervalo (em minutos)'
                 type='number'
                 id='interval'
-                defaultValue={intervalInMinutes}
+                value={intervalInMinutes}
                 handleChange={(e) => {
                     persist(INTERVAL_KEY, e.target.value)
                     setIntervalInMinutes(e.target.value)
@@ -89,7 +89,7 @@ const TimerForm = () => {
                         label='Título da notificação'
                         type='text'
                         id='notificationTitle'
-                        defaultValue={notificationTitle}
+                        value={notificationTitle}
                         handleChange={(e) => {
                             persist(NOTIFICATION_TITLE_KEY, e.target.value)
                             setNotificationTitle(e.target.value)
@@ -101,7 +101,7 @@ const TimerForm = () => {
                         label='Descrição da notificação'
                         type='text'
                         id='notificationDescription'
-                        defaultValue={notificationDescription}
+                        value={notificationDescription}
                         handleChange={(e) => {
                             persist(NOTIFICATION_DESCRIPTION_KEY, e.target.value)
                             setNotificationDescription(e.target.value)
