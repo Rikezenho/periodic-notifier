@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNotification } from '../../hooks/useNotification.hook'
+import { usePersistence } from '../../hooks/usePersistence.hook'
 import { useTimer } from '../../hooks/useTimer.hook'
 import { useVibrate } from '../../hooks/useVibrate.hook'
 import { InputBoxed } from '../InputBoxed'
@@ -9,14 +10,21 @@ const DEFAULT_INTERVAL = 1
 const DEFAULT_NOTIFICATION_TITLE = 'Notificação periódica!'
 const DEFAULT_NOTIFICATION_DESCRIPTION = 'Olha o timer aí :)'
 
+const INTERVAL_KEY = 'INTERVAL'
+const NOTIFICATION_TITLE_KEY = 'NOTIFICATION_TITLE'
+const NOTIFICATION_DESCRIPTION_KEY = 'NOTIFICATION_DESCRIPTION'
+const SHOULD_VIBRATE_KEY = 'SHOULD_VIBRATE'
+
 const TimerForm = () => { 
-    const [intervalInMinutes, setIntervalInMinutes] = useState(DEFAULT_INTERVAL)
+    const { getPersisted, persist } = usePersistence()
+
+    const [intervalInMinutes, setIntervalInMinutes] = useState(getPersisted(INTERVAL_KEY) || DEFAULT_INTERVAL)
     const [isActive, setIsActive] = useState(false)
 
-    const [notificationTitle, setNotificationTitle] = useState(DEFAULT_NOTIFICATION_TITLE)
-    const [notificationDescription, setNotificationDescription] = useState(DEFAULT_NOTIFICATION_DESCRIPTION)
+    const [notificationTitle, setNotificationTitle] = useState(getPersisted(NOTIFICATION_TITLE_KEY) || DEFAULT_NOTIFICATION_TITLE)
+    const [notificationDescription, setNotificationDescription] = useState(getPersisted(NOTIFICATION_DESCRIPTION_KEY) || DEFAULT_NOTIFICATION_DESCRIPTION)
 
-    const [shouldVibrate, setShouldVibrate] = useState(true)
+    const [shouldVibrate, setShouldVibrate] = useState(getPersisted(SHOULD_VIBRATE_KEY) === null ? true : getPersisted(SHOULD_VIBRATE_KEY))
 
     const {
         hasNotificationApi,
@@ -63,7 +71,10 @@ const TimerForm = () => {
                 type='number'
                 id='interval'
                 defaultValue={intervalInMinutes}
-                handleChange={(e) => setIntervalInMinutes(e.target.value)}
+                handleChange={(e) => {
+                    persist(INTERVAL_KEY, e.target.value)
+                    setIntervalInMinutes(e.target.value)
+                }}
             />
         </div>
         {
@@ -79,7 +90,10 @@ const TimerForm = () => {
                         type='text'
                         id='notificationTitle'
                         defaultValue={notificationTitle}
-                        handleChange={(e) => setNotificationTitle(e.target.value)}
+                        handleChange={(e) => {
+                            persist(NOTIFICATION_TITLE_KEY, e.target.value)
+                            setNotificationTitle(e.target.value)
+                        }}
                     />
                 </div>
                 <div className="row">
@@ -88,7 +102,10 @@ const TimerForm = () => {
                         type='text'
                         id='notificationDescription'
                         defaultValue={notificationDescription}
-                        handleChange={(e) => setNotificationDescription(e.target.value)}
+                        handleChange={(e) => {
+                            persist(NOTIFICATION_DESCRIPTION_KEY, e.target.value)
+                            setNotificationDescription(e.target.value)
+                        }}
                     />
                 </div>
             </> : null
@@ -102,7 +119,10 @@ const TimerForm = () => {
                         type="checkbox"
                         id="shouldVibrate"
                         checked={shouldVibrate}
-                        onChange={(e) => setShouldVibrate(e.target.checked)}
+                        onChange={(e) => {
+                            persist(SHOULD_VIBRATE_KEY, e.target.checked)
+                            setShouldVibrate(e.target.checked)
+                        }}
                     />
                 </label>
             </div>
