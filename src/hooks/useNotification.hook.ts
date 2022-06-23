@@ -6,19 +6,23 @@ type useNotificationType = {
 }
 
 const useNotification = ({
-    title = 'Notificação',
-    description = ''
+    title = '',
+    description = '',
 }: useNotificationType) => {
     const [hasNotificationApi, setHasNotificationApi] = useState(false)
     const [hasPermissionForNotification, setHasPermissionForNotification] = useState(false)
 
     const notificate = useCallback(() => {
-        new Notification(title, { body: description })
+        if (!navigator?.serviceWorker?.ready) return
+
+        navigator.serviceWorker.ready.then((registration) => {
+            registration.showNotification(title, {
+                body: description,
+            });
+        });
     }, [title, description])
     
     const requestNotificationPermission = useCallback(() => {
-        if (Notification.permission === "granted") return
-
         Notification.requestPermission((permission) => {
             if (permission === "granted") {
                 setHasPermissionForNotification(true)
@@ -31,11 +35,11 @@ const useNotification = ({
             setHasNotificationApi(true)
         }
 
-        if (Notification.permission === "granted") {
+        if (window?.Notification && Notification.permission === "granted") {
             setHasPermissionForNotification(true)
         }
 
-        if (Notification.permission !== 'denied') {
+        if (window?.Notification && Notification.permission !== 'denied') {
             requestNotificationPermission()
         }
     }, [])
