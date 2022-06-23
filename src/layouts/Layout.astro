@@ -13,20 +13,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <link rel="icon" type="image/x-icon" href="https://fav.farm/%E2%8F%B1" />
-  <link rel="manifest" href="./manifest.webmanifest">
   <title>{title}</title>
 </head>
 
 <body>
   <slot />
 </body>
-
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("serviceWorker.js")
-      .catch((err) => { console.log("Service worker registration failed"); });
-  }
-</script>
 
 </html>
 

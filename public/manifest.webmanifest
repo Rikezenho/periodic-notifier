@@ -1,8 +1,0 @@
-{
-  "name": "Periodic Notifier",
-  "short_name": "Periodic Notifier",
-  "start_url": "https://periodic-notifier.netlify.app",
-  "display": "standalone",
-  "background_color": "#333",
-  "description": "Um app simples para te notificar periodicamente"
-}
